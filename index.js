@@ -45,7 +45,7 @@ do {
 
     if (res.ok) {
       console.error('res not ok')
-      await sleep(60 * 000)
+      await sleep(60 * 1000)
       continue
     }
 
@@ -73,7 +73,7 @@ do {
     }
   } catch (e) {
     console.error(e)
-    await sleep(60 * 000)
+    await sleep(60 * 1000)
   }
 
   await sleep(SLEEP)
