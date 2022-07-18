@@ -35,30 +35,40 @@ let state = {}
 
 do {
   const isFirstRun = Object.keys(state).length === 0
+  try {
+    const res = await request(ENDPOINT, query)
 
-  const res = await request(ENDPOINT, query)
-
-  for (const { subgraph, synced, health } of res.indexingStatuses) {
-    if (!state.hasOwnProperty(subgraph)) {
-      if (!isFirstRun) {
-        await notify('new version', subgraph)
-      }
-
-      state[subgraph] = { synced, health }
+    if (res.ok) {
+      console.error('res not ok')
+      await sleep(60 * 000)
       continue
     }
 
-    const current = state[subgraph]
+    for (const { subgraph, synced, health } of res.indexingStatuses) {
+      if (!state.hasOwnProperty(subgraph)) {
+        if (!isFirstRun) {
+          await notify('new version', subgraph)
+        }
 
-    if (current.synced !== synced) {
-      await notify('sync', current.synced, '->', synced, subgraph)
-      current.synced = synced
-    }
+        state[subgraph] = { synced, health }
+        continue
+      }
 
-    if (current.health !== health) {
-      await notify('health', current.health, '->', health, subgraph)
-      current.health = health
+      const current = state[subgraph]
+
+      if (current.synced !== synced) {
+        await notify('sync', current.synced, '->', synced, subgraph)
+        current.synced = synced
+      }
+
+      if (current.health !== health) {
+        await notify('health', current.health, '->', health, subgraph)
+        current.health = health
+      }
     }
+  } catch (e) {
+    console.error(e)
+    await sleep(60 * 000)
   }
 
   await sleep(SLEEP)
