@@ -1,6 +1,11 @@
 import dotenv from 'dotenv'
 import { request, gql } from 'graphql-request'
 
+process.on('SIGINT', () => {
+  console.info('Shutting down')
+  process.exit(0)
+})
+
 dotenv.config()
 const { ENDPOINT, TG_TOKEN, TG_CHAT, SLEEP } = process.env
 
