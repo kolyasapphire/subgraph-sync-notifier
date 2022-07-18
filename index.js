@@ -54,7 +54,7 @@ do {
         if (!isFirstRun) {
           await notify('New version:', subgraph)
         } else {
-          console.log('Fetched initial version:')
+          console.log('Fetched initial version:', subgraph)
         }
 
         state[subgraph] = { synced, health }
