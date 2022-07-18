@@ -44,7 +44,7 @@ do {
     const res = await request(ENDPOINT, query)
 
     if (res.ok) {
-      console.error('res not ok')
+      console.error('Endpoint response not ok')
       await sleep(60 * 1000)
       continue
     }
@@ -52,7 +52,9 @@ do {
     for (const { subgraph, synced, health } of res.indexingStatuses) {
       if (!state.hasOwnProperty(subgraph)) {
         if (!isFirstRun) {
-          await notify('new version', subgraph)
+          await notify('New version:', subgraph)
+        } else {
+          console.log('Fetched initial version:')
         }
 
         state[subgraph] = { synced, health }
@@ -62,12 +64,12 @@ do {
       const current = state[subgraph]
 
       if (current.synced !== synced) {
-        await notify('sync', current.synced, '->', synced, subgraph)
+        await notify('Sync change:', current.synced, '->', synced, subgraph)
         current.synced = synced
       }
 
       if (current.health !== health) {
-        await notify('health', current.health, '->', health, subgraph)
+        await notify('Health change:', current.health, '->', health, subgraph)
         current.health = health
       }
     }
