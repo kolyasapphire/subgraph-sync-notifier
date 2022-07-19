@@ -49,6 +49,11 @@ do {
       continue
     }
 
+    if (Object.values(state).length && !res.indexingStatuses.length) {
+      await notify('Detected node reset. Clearing state.')
+      state = {}
+    }
+
     for (const { subgraph, synced, health } of res.indexingStatuses) {
       if (!state.hasOwnProperty(subgraph)) {
         if (!isFirstRun) {
