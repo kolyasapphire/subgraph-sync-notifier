@@ -1,5 +1,5 @@
 import dotenv from 'dotenv'
-import { request, gql } from 'graphql-request'
+import { GraphQLClient, gql } from 'graphql-request'
 
 process.on('SIGINT', () => {
   console.info('Shutting down')
@@ -36,18 +36,21 @@ const notify = async (...args) => {
   await sendMessage(args.join(' '))
 }
 
+const client = new GraphQLClient(ENDPOINT)
+
 let state = {}
 
 do {
   const isFirstRun = Object.keys(state).length === 0
-  try {
-    const res = await request(ENDPOINT, query)
 
-    if (res.ok) {
-      console.error('Endpoint response not ok')
-      await sleep(60 * 1000)
-      continue
-    }
+  const abortController = new AbortController()
+  const timeoutId = setTimeout(() => abortController.abort(), 3000)
+
+  try {
+    const res = await client.request({
+      document: query,
+      signal: abortController.signal,
+    })
 
     if (Object.values(state).length && !res.indexingStatuses.length) {
       await notify('Detected node reset. Clearing state.')
@@ -81,6 +84,8 @@ do {
   } catch (e) {
     console.error(e)
     await sleep(60 * 1000)
+  } finally {
+    clearTimeout(timeoutId)
   }
 
   await sleep(SLEEP)
