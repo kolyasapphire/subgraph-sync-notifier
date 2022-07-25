@@ -83,7 +83,7 @@ do {
     }
   } catch (e) {
     console.error(e)
-    await sleep(60 * 1000)
+    await sleep(60)
   } finally {
     clearTimeout(timeoutId)
   }
