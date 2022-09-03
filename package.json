@@ -6,7 +6,7 @@
   "dependencies": {
     "dotenv": "16.0.1",
     "graphql": "16.6.0",
-    "graphql-request": "4.3.0"
+    "graphql-request": "5.0.0"
   },
   "devDependencies": {
     "typescript": "4.8.2"
