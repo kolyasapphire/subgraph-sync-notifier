@@ -19,19 +19,20 @@ const query = gql`
   }
 `
 
-const sleep = (sec) => new Promise((resolve) => setTimeout(resolve, sec * 1000))
+const sleep = (sec: number) =>
+  new Promise((resolve) => setTimeout(resolve, sec * 1000))
 
 const tgBase = `https://api.telegram.org/bot${TG_TOKEN}/`
 const tgMessage = tgBase + 'sendMessage'
 
-const sendMessage = async (text) =>
+const sendMessage = async (text: string) =>
   await fetch(tgMessage, {
     method: 'POST',
     body: JSON.stringify({ chat_id: TG_CHAT, text: text }),
     headers: { 'Content-Type': 'application/json' },
   })
 
-const notify = async (...args) => {
+const notify = async (...args: (string | number)[]) => {
   console.log(...args)
   await sendMessage(args.join(' '))
 }
@@ -88,5 +89,5 @@ do {
     clearTimeout(timeoutId)
   }
 
-  await sleep(SLEEP)
+  await sleep(parseInt(SLEEP))
 } while (true)
