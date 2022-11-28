@@ -1,3 +1,5 @@
+<img src="https://user-images.githubusercontent.com/4752441/204310522-999660e8-9a14-4c7e-952e-6d5e9451f9d5.png" width=50% height=50%>
+
 # Subgraph Sync Notifier
 
 A super simple daemon which polls the status endpoint of a [graph-node](https://github.com/graphprotocol/graph-node) and sends a Telegram message when there are changes detected:
