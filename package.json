@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "typescript": "4.9.5",
-    "@types/node": "18.14.0",
+    "@types/node": "18.14.2",
     "ts-node": "10.9.1"
   },
   "type": "module",
